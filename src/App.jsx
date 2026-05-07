@@ -4,7 +4,7 @@ import RootRouter from '@/routes/layout/RootRouter';
 const App = () => {
   return (
     <>
-     <RootRouter />
+      <RootRouter />
     </>
   );
 };
