@@ -1,10 +1,27 @@
 {
-  "user": [],
-  "todos": [
+  "user": [
     {
-      "name": "muskan",
-      "id": "JMAmFlL0ERk"
+      "full_name": "Muskan Singh",
+      "email": "contact.muskansingh01@gmail.com",
+      "phone": "9310436957",
+      "password": "1452369",
+      "id": "sNQThfBbIDo"
+    },
+    {
+      "full_name": "Muskan Singh",
+      "email": "contact.muskansingh01@gmail.com",
+      "phone": "9874556258",
+      "password": "14523698",
+      "id": "x7eKplXIRWs"
+    },
+    {
+      "full_name": "Nitin Thakur ",
+      "email": "contact.muskansingh01@gmail.com",
+      "phone": "9310436957",
+      "password": "123456",
+      "id": "AeBPRbLQGpY"
     }
   ],
+  "todos": [],
   "$schema": "./node_modules/json-server/schema.json"
 }

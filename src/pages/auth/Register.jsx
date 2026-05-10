@@ -1,25 +1,53 @@
-import { useFormik } from 'formik';
-import { registerValidationSchema } from '@/validation/auth/Register';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useFormik } from "formik";
+import { registerValidationSchema } from "@/validation/auth/Register";
+import { useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getUsers, createUsers } from "@/services/authServices";
 
 const Register = () => {
   //---------- All hooks use here -----------
   const navigate = useNavigate();
 
-  //----------Handle form here with Formik-----------
-  const { values, errors, touched, handleBlur, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      full_name: '',
-      email: '',
-      phone: '',
-      password: '',
-    },
-    validationSchema: registerValidationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+  // ------------ Tenstack query - use here -----------------
+  const { data: users, isLoading: isUsersLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
   });
+
+  const { mutate: createUsersMutate, isPending: isUsersCreateLoading } =
+    useMutation({
+      mutationFn: (data) => createUsers(data),
+      onSuccess: (data) => {
+        console.log(data);
+        alert("User created successfully");
+      },
+    });
+
+  //----------Handle form here with Formik-----------
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        full_name: "",
+        email: "",
+        phone: "",
+        password: "",
+      },
+      validationSchema: registerValidationSchema,
+      onSubmit: async (values) => {
+        const isUserExists = users.find((items) => items.email === values.email);
+        if(isUserExists){
+          alert("Email already exists, please login");
+          return
+        }
+        createUsersMutate(values);
+      },
+    });
+
+  if (isUsersLoading) {
+    return <p>loading....</p>;
+  }
+
+  console.log(users);
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat">
@@ -40,7 +68,9 @@ const Register = () => {
                 onBlur={handleBlur}
                 placeholder="Full name"
               />
-              {errors.full_name && touched.full_name && <p>{errors.full_name}</p>}
+              {errors.full_name && touched.full_name && (
+                <p>{errors.full_name}</p>
+              )}
             </div>
 
             <div className="mb-4 flex justify-center text-lg">
@@ -83,17 +113,21 @@ const Register = () => {
             </div>
             <div className="mt-8 flex justify-center text-lg text-black">
               <button
+                disabled={isUsersCreateLoading}
                 type="submit"
                 className="rounded-3xl bg-yellow-600 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-800"
               >
-                SignUp
+                {isUsersCreateLoading ? "Loading......" : "SignUp"}
               </button>
             </div>
             <span className="mt-4 block text-center">
-              if you already have an account then{' '}
-              <span className="text-blue-500 cursor-pointer" onClick={() => navigate('/')}>
+              if you already have an account then{" "}
+              <span
+                className="text-blue-500 cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 login
-              </span>{' '}
+              </span>{" "}
               first
             </span>
           </form>
