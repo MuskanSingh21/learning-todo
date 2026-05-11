@@ -3,6 +3,7 @@ import { registerValidationSchema } from "@/validation/auth/Register";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUsers, createUsers } from "@/services/authServices";
+import { convertLowerCase } from "@/utils/CommonFuncions";
 
 const Register = () => {
   //---------- All hooks use here -----------
@@ -39,15 +40,13 @@ const Register = () => {
           alert("Email already exists, please login");
           return
         }
-        createUsersMutate(values);
+        createUsersMutate({...values, email:convertLowerCase(values.email)});
       },
     });
 
   if (isUsersLoading) {
     return <p>loading....</p>;
   }
-
-  console.log(users);
 
   return (
     <div className="flex h-screen w-full items-center justify-center bg-gray-900 bg-cover bg-no-repeat">

@@ -15,6 +15,11 @@ const Login = () => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: (values) => {
+      const isUserExists = users.find((items) => items.email === values.email);
+        if(isUserExists){
+          navigate('/home')
+          return
+        }
       alert(JSON.stringify(values, null, 2));
     },
   });
@@ -55,6 +60,7 @@ const Login = () => {
             </div>
             <div className="mt-8 flex justify-center text-lg text-black">
               <button
+              
                 type="submit"
                 className="rounded-3xl bg-yellow-600 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-yellow-800"
               >

@@ -1,7 +1,7 @@
 import Login from '@pages/auth/Login';
 import Register from '@pages/auth/Register';
-import React from 'react';
 import { useRoutes } from 'react-router-dom';
+import Home from '@pages/Home';
 
 const RootRouter = () => {
   const routes = [
@@ -13,6 +13,10 @@ const RootRouter = () => {
       path: '/register',
       element: <Register />,
     },
+    {
+      path: '/home',
+      element: <Home/>
+    }
   ];
 
   return useRoutes(routes);
